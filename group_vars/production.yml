@@ -48,6 +48,10 @@ mysql_query_cache_size: "16M"
 mysql_max_connections: 151
 
 # Certbot
+certbot_install_from_source: yes
+certbot_repo: https://github.com/certbot/certbot.git
+certbot_version: v0.14.1
+certbot_keep_updated: yes
 certbot_auto_renew_user: root
 
 # Python
