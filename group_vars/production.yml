@@ -47,6 +47,9 @@ mysql_thread_cache_size: "8"
 mysql_query_cache_size: "16M"
 mysql_max_connections: 151
 
+# Certbot
+certbot_auto_renew_user: root
+
 # Python
 python_install_2: no
 
