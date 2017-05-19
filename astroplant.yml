@@ -12,3 +12,8 @@
   - geerlingguy.mysql
   - geerlingguy.nginx
   - python
+  
+  vars_prompt:
+  - name: "mysql_users_pass"
+    prompt: "[production] Enter the password for the MySQL user"
+    
