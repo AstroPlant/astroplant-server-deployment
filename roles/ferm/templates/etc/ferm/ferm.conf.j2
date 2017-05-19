@@ -1,0 +1,78 @@
+# {{ ansible_managed }}
+# manual customization of this file is not recommended
+
+domain ip table filter chain (INPUT OUTPUT) protocol ipv6 ACCEPT;
+
+domain (ip ip6) table filter {
+  chain INPUT {
+    policy {{ ferm_default_policy_input }};
+
+    # connection tracking
+    mod conntrack ctstate INVALID DROP;
+    mod conntrack ctstate (ESTABLISHED RELATED) ACCEPT;
+
+    # allow local connections
+    interface lo ACCEPT;
+
+    # drop connections from bad guys
+    mod recent name "badguys" update seconds 3600 {
+      mod limit limit 3/hour limit-burst 5 {
+        LOG log-prefix "iptables-recent-badguys: " log-level warning;
+      }
+      DROP;
+    }
+
+    @include 'filter-input.d/';
+
+{% if ferm_limit_portscans %}
+    # catch bad guys (port scanners)
+    mod recent set name "badguys" {
+      mod limit limit 3/hour limit-burst 5 {
+        LOG log-prefix "iptables-portscan: " log-level warning;
+      }
+    }
+
+{% endif %}
+    # reject everything else
+    protocol tcp REJECT reject-with tcp-reset;
+  }
+
+  chain OUTPUT {
+    policy {{ ferm_default_policy_output }};
+
+    # connection tracking
+    mod conntrack ctstate INVALID DROP;
+    mod conntrack ctstate (ESTABLISHED RELATED) ACCEPT;
+  }
+
+  chain FORWARD {
+    policy {{ ferm_default_policy_forward }};
+
+    # connection tracking
+    mod conntrack ctstate INVALID DROP;
+    mod conntrack ctstate (ESTABLISHED RELATED) ACCEPT;
+  }
+}
+
+domain ip table filter {
+  chain INPUT {
+    # allow ICMP protocol (ip4)
+    protocol icmp ACCEPT;
+  
+    # reject everything else (ip4)
+    protocol udp REJECT reject-with icmp-port-unreachable;
+    REJECT reject-with icmp-proto-unreachable;
+  }
+}
+
+domain ip6 table filter {
+  chain INPUT {
+    # allow ICMP protocol (ip6)
+    protocol icmpv6 ACCEPT;
+  
+    # reject everything else (ip6)
+    protocol udp REJECT reject-with icmp6-port-unreachable;
+  }
+}
+
+@include 'ferm.d/';

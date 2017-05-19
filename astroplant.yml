@@ -1,0 +1,14 @@
+---
+# Requires Ansible >= 2.0
+- hosts: all
+  roles:
+  - ferm
+  - fail2ban
+  
+- hosts: production
+  roles:
+  - geerlingguy.git
+  - geerlingguy.certbot
+  - geerlingguy.mysql
+  - geerlingguy.nginx
+  - python

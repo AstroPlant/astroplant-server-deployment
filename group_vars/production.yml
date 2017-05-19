@@ -1,0 +1,52 @@
+---
+# Ferm settings:
+ferm_input_group_list:
+  - type: "dport_accept"
+    dport: ["ssh"]
+    filename: "ssh_accept"
+  - type: "dport_accept"
+    dport: ["http", "https"]
+    filename: "http"
+    
+# MySQL:
+mysql_packages:
+  - mariadb-client
+  - mariadb-server
+mysql_user_home: /root
+mysql_enabled_on_startup: yes
+overwrite_global_mycnf: yes
+# MySQL users and database
+mysql_databases: 
+  - name: astroplant
+mysql_users:
+  - name: astroplant
+    password: "{{ mysql_users_pass }}"
+    priv: "astroplant.*:ALL"
+    
+# MySQL connection:
+mysql_port: "3306"
+mysql_bind_address: '0.0.0.0'
+mysql_datadir: /var/lib/mysql
+# MySQL logging:
+mysql_log: ""
+mysql_log_error: /var/log/mysqld.log
+mysql_syslog_tag: mysqld
+# Slow query log:
+mysql_slow_query_log_enabled: no
+mysql_slow_query_log_file: /var/log/mysql-slow.log
+mysql_slow_query_time: 2
+# General mysql config:
+mysql_key_buffer_size: "256M"
+mysql_max_allowed_packet: "64M"
+mysql_table_open_cache: "256"
+mysql_sort_buffer_size: "1M"
+mysql_read_buffer_size: "1M"
+mysql_read_rnd_buffer_size: "4M"
+mysql_myisam_sort_buffer_size: "64M"
+mysql_thread_cache_size: "8"
+mysql_query_cache_size: "16M"
+mysql_max_connections: 151
+
+# Python
+python_install_2: no
+
