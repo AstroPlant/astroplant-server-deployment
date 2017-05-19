@@ -9,6 +9,12 @@ bind-address = {{ mysql_bind_address }}
 datadir = {{ mysql_datadir }}
 socket = {{ mysql_socket }}
 pid-file = {{ mysql_pid_file }}
+{% if mysql_skip_name_resolve %}
+skip-name-resolve
+{% endif %}
+{% if mysql_sql_mode %}
+sql_mode = {{ mysql_sql_mode }}
+{% endif %}
 
 # Logging configuration.
 {% if mysql_log_error == 'syslog' or mysql_log == 'syslog' %}
@@ -37,6 +43,7 @@ log_bin = mysql-bin
 log-bin-index = mysql-bin.index
 expire_logs_days = {{ mysql_expire_logs_days }}
 max_binlog_size = {{ mysql_max_binlog_size }}
+binlog_format = {{mysql_binlog_format}}
 
 {% for db in mysql_databases %}
 {% if db.replicate|default(1) %}
@@ -72,19 +79,27 @@ read_buffer_size = {{ mysql_read_buffer_size }}
 read_rnd_buffer_size = {{ mysql_read_rnd_buffer_size }}
 myisam_sort_buffer_size = {{ mysql_myisam_sort_buffer_size }}
 thread_cache_size = {{ mysql_thread_cache_size }}
+query_cache_type = {{ mysql_query_cache_type }}
 query_cache_size = {{ mysql_query_cache_size }}
+query_cache_limit = {{ mysql_query_cache_limit }}
 max_connections = {{ mysql_max_connections }}
+tmp_table_size = {{ mysql_tmp_table_size }}
+max_heap_table_size = {{ mysql_max_heap_table_size }}
+group_concat_max_len = {{ mysql_group_concat_max_len }}
+join_buffer_size = {{ mysql_join_buffer_size }}
 
 # Other settings.
 wait_timeout = {{ mysql_wait_timeout }}
-
-# Try number of CPU's * 2 for thread_concurrency.
-thread_concurrency = {{ mysql_thread_concurrency }}
+lower_case_table_names = {{ mysql_lower_case_table_names }}
+event_scheduler = {{ mysql_event_scheduler_state }}
 
 # InnoDB settings.
+{% if mysql_supports_innodb_large_prefix %}
+innodb_large_prefix = {{ mysql_innodb_large_prefix }}
+innodb_file_format = {{ mysql_innodb_file_format }}
+{% endif %}
 innodb_file_per_table = {{ mysql_innodb_file_per_table }}
 innodb_buffer_pool_size = {{ mysql_innodb_buffer_pool_size }}
-innodb_additional_mem_pool_size = {{ mysql_innodb_additional_mem_pool_size }}
 innodb_log_file_size = {{ mysql_innodb_log_file_size }}
 innodb_log_buffer_size = {{ mysql_innodb_log_buffer_size }}
 innodb_flush_log_at_trx_commit = {{ mysql_innodb_flush_log_at_trx_commit }}
@@ -103,4 +118,3 @@ pid-file = {{ mysql_pid_file }}
 #
 !includedir {{ mysql_config_include_dir }}
 {% endif %}
-

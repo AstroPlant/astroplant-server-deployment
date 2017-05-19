@@ -12,6 +12,7 @@ ferm_input_group_list:
 mysql_packages:
   - mariadb-client
   - mariadb-server
+  - python-mysqldb
 mysql_user_home: /root
 mysql_enabled_on_startup: yes
 overwrite_global_mycnf: yes
