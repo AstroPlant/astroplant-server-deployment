@@ -12,6 +12,7 @@
   - geerlingguy.mysql
   - geerlingguy.nginx
   - python
+  - astroplant
   
   vars_prompt:
   - name: "mysql_users_pass"
