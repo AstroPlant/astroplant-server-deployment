@@ -2,6 +2,5 @@
 - name: Ensure AstroPlant server user is present
   user:
     name: astroplant
-    group: astroplant
     comment: "AstroPlant server user"
     
