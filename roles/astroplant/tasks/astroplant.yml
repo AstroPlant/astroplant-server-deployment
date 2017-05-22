@@ -13,7 +13,7 @@
     
 - name: Install requirements.
   pip: 
-    requirements: {{ astroplant_server_requirements }}
+    requirements: "{{ astroplant_server_requirements }}"
     virtualenv: /home/astroplant/astro_venv
     virtualenv_python: python3.4
     
