@@ -7,6 +7,14 @@
     update: "{{ astroplant_server_keep_updated }}"
     force: yes
 
+- name: Give AstroPlant user access to the AstroPlant application directory
+  file:
+    path: "{{ astroplant_server_dir }}"
+    owner: astroplant
+    mode: 0744
+    recurse: yes
+    state: directory
+    
 - name: Set AstroPlant requirements path.
   set_fact:
     astroplant_server_requirements: "{{ astroplant_server_dir }}/requirements.txt"

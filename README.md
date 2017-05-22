@@ -24,7 +24,7 @@ Edit `server/settings.py`
 Manually run
 ```
 source /home/astroplant/astro_venv/bin/activate
-python manage.py collectstatic
+python /usr/bin/astroplant/manage.py collectstatic
 ```
 
 Manually request letsencrypt certificate:
@@ -32,7 +32,7 @@ Manually request letsencrypt certificate:
 $ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d astroplant.kepow.org
 ```
 
-To start the server:
+To start the server (ensure you're in the virtual environment context, through the `source` command above)
 ```
-uwsgi --ini uwsgi.ini
+uwsgi --ini ~/uwsgi.ini
 ```
