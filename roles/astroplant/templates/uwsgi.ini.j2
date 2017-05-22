@@ -1,0 +1,9 @@
+[uwsgi]
+chdir={{ astroplant_server_dir }}
+module=server.wsgi:application
+master=True
+pidfile=/tmp/astroplant-server.pid
+vacuum=True
+max-requests=5000
+daemonize=/var/log/uwsgi/server.log
+socket=127.0.0.1:{{ astroplant_server_listen_port }}

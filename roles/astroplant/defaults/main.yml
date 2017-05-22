@@ -1,0 +1,11 @@
+---
+# The AstroPlant repository:
+astroplant_server_repo: https://github.com/AstroPlant/server.git
+astroplant_server_version: master
+astroplant_server_keep_updated: yes
+
+# Where to install the AstroPlant server
+astroplant_server_dir: /usr/bin/astroplant
+
+# AstroPlant server config:
+astroplant_server_listen_port: 8080

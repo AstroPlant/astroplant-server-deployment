@@ -1,0 +1,5 @@
+---
+- name: Ensure MySQL database development files are installed.
+  package:
+    name: "libmysqlclient-dev"
+    state: present
