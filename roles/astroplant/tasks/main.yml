@@ -7,6 +7,6 @@
   file:
     path: /var/www/astroplant
     owner: astroplant
-    mode: 0644
+    mode: 0744
     state: directory
     
