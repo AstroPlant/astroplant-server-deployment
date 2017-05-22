@@ -8,5 +8,6 @@
     path: /var/www/astroplant
     owner: astroplant
     mode: 0744
+    recurse: yes
     state: directory
     
