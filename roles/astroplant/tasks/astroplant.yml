@@ -7,7 +7,7 @@
     update: "{{ astroplant_server_keep_updated }}"
     force: yes
 
-- name: Give AstroPlant user access to the AstroPlant application directory
+- name: Give astroplant user access to the AstroPlant application directory
   file:
     path: "{{ astroplant_server_dir }}"
     owner: astroplant
