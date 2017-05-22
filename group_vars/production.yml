@@ -58,4 +58,3 @@ certbot_auto_renew_user: root
 # Python
 python_install_2: no
 python_install_virtualenv: yes
-python_pip_executable: python3 -m pip
