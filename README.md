@@ -29,7 +29,7 @@ python /usr/bin/astroplant/manage.py collectstatic
 
 Manually request letsencrypt certificate:
 ```
-$ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d astroplant.kepow.org
+$ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d astroplant.kepow.org -d astroplant.io
 ```
 
 To start the server (ensure you're in the virtual environment context, through the `source` command above)
