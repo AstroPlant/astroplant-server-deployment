@@ -2,5 +2,5 @@
 - name: Ensure AstroPlant server user is present
   user:
     name: astroplant
+    shell: /bin/bash
     comment: "AstroPlant server user"
-    
