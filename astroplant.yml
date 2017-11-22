@@ -11,6 +11,7 @@
   - geerlingguy.certbot
   - geerlingguy.mysql
   - geerlingguy.nginx
+  - geerlingguy.nodejs
   - python
   - astroplant
   
