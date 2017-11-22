@@ -14,24 +14,51 @@
     mode: 0744
     recurse: yes
     state: directory
-    
-- name: Set AstroPlant requirements path.
+
+- name: Set AstroPlant Python requirements path.
   set_fact:
     astroplant_server_requirements: "{{ astroplant_server_dir }}/requirements.txt"
-    
-- name: Install requirements.
+
+- name: Install Python requirements.
   pip: 
     requirements: "{{ astroplant_server_requirements }}"
+    state: forcereinstall
     virtualenv: /home/astroplant/astro_venv
     virtualenv_python: python3.4
-    
+
+- name: Install npm packages.
+  npm:
+    path: "{{ astroplant_server_dir }}"
+    state: latest
+
+- name: Build static files.
+  command: npm run-script build
+  args:
+    chdir: "{{ astroplant_server_dir }}"
+  environment:
+    NODE_ENV: production
+
+- name: Ensure static file webroot directory exists.
+  file:
+    path: "/var/www/astroplant"
+    owner: www-data
+    group: www-data
+    mode: 0744
+    recurse: yes
+    state: directory
+
+- name: Collect static files.
+  shell: . /home/astroplant/astro_venv/bin/activate && python manage.py collectstatic --no-input --clear
+  args:
+    chdir: "{{ astroplant_server_dir }}"
+
 - name: Copy uwsgi configuration.
   template:
     src: uwsgi.ini.j2
     dest: /home/astroplant/uwsgi.ini
     owner: astroplant
     mode: 0755
-    
+
 - name: Copy Nginx configuration.
   template:
     src: nginx.conf.j2

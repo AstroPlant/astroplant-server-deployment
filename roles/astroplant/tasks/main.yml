@@ -3,11 +3,3 @@
 - include: packages.yml
 - include: astroplant.yml
 
-- name: Ensure AstroPlant web root directory exists
-  file:
-    path: /var/www/astroplant
-    owner: astroplant
-    mode: 0744
-    recurse: yes
-    state: directory
-    
