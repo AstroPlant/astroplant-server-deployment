@@ -59,3 +59,8 @@ certbot_auto_renew_user: root
 python_install_2: no
 python_install_virtualenv: yes
 python_update_pip: yes
+
+# AstroPlant
+astroplant_admins:
+  - name: "Thomas Churchman"
+    email: "postmaster@kepow.org"

@@ -24,6 +24,12 @@ SECRET_KEY = "{{ astroplant_secret_key }}"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+{% if astroplant_admins is defined %}
+ADMINS = [{% for admin in astroplant_admins %}('{{ admin.name }}', '{{ admin.email }}'),{% endfor %} }}]
+{% endif %}
+
+SERVER_EMAIL = "errors@my.astroplant.io"
+
 ALLOWED_HOSTS = ["{{ astroplant_host }}",]
 
 # Application definition
@@ -177,6 +183,7 @@ LOGIN_REDIRECT_URL = '/dashboard'
 
 # Email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'no-reply@my.astroplant.io'
 
 # Timezones
 USE_TZ = True
