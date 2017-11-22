@@ -25,7 +25,7 @@ SECRET_KEY = "{{ astroplant_secret_key }}"
 DEBUG = False
 
 {% if astroplant_admins is defined %}
-ADMINS = [{% for admin in astroplant_admins %}('{{ admin.name }}', '{{ admin.email }}'),{% endfor %} }}]
+ADMINS = [{% for admin in astroplant_admins %}('{{ admin.name }}', '{{ admin.email }}'),{% endfor %}]
 {% endif %}
 
 SERVER_EMAIL = "errors@my.astroplant.io"
