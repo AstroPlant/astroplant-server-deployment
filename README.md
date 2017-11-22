@@ -30,9 +30,9 @@ If desired, you can import default AstroPlant data (such as measurement types, p
 source /home/astroplant/astro_venv/bin/activate && python manage.py loaddata astroplant
 ```
 
-Manually request letsencrypt certificate:
+Manually request a LetsEncrypt certificate for your domain:
 ```
-$ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d astroplant.kepow.org -d astroplant.io
+$ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d example.com
 ```
 
 Start the server:
