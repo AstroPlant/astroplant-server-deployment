@@ -195,6 +195,14 @@ GRAVATAR_DEFAULT_IMAGE = 'identicon'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
     'formatters': {
         'standard': {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
@@ -210,25 +218,30 @@ LOGGING = {
             'backupCount': 2,
             'formatter': 'standard',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
     },
     'loggers': {
         'django': {
-            'handlers': ['logfile'],
+            'handlers': ['logfile', 'mail_admins',],
             'level': 'DEBUG',
             'propagate': True,
         },
         'backend': {
-            'handlers': ['logfile'],
+            'handlers': ['logfile', 'mail_admins',],
             'level': 'DEBUG',
             'propagate': True,
         },
         'server': {
-            'handlers': ['logfile'],
+            'handlers': ['logfile', 'mail_admins',],
             'level': 'DEBUG',
             'propagate': True,
         },
         'website': {
-            'handlers': ['logfile'],
+            'handlers': ['logfile', 'mail_admins',],
             'level': 'DEBUG',
             'propagate': True,
         },
