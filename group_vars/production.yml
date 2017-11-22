@@ -21,7 +21,7 @@ mysql_databases:
   - name: astroplant
 mysql_users:
   - name: astroplant
-    password: "{{ mysql_users_pass }}"
+    password: "{{ astroplant_mysql_password }}"
     priv: "astroplant.*:ALL"
     
 # MySQL connection:

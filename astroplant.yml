@@ -6,6 +6,10 @@
   - fail2ban
   
 - hosts: production
+  vars:
+    astroplant_mysql_password: "{{ lookup('file', 'conf/mysql_password.conf') }}"
+    astroplant_secret_key: "{{ lookup('file', 'conf/secret_key.conf') }}"
+
   roles:
   - geerlingguy.git
   - geerlingguy.certbot
@@ -14,8 +18,4 @@
   - geerlingguy.nodejs
   - python
   - astroplant
-  
-  vars_prompt:
-  - name: "mysql_users_pass"
-    prompt: "[production] Enter the password for the MySQL user"
     

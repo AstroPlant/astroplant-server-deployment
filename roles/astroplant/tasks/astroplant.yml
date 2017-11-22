@@ -52,6 +52,13 @@
   args:
     chdir: "{{ astroplant_server_dir }}"
 
+- name: Copy backend Django configuration.
+  template:
+    src: settings.py.j2
+    dest: "{{ astroplant_server_dir }}/server/settings.py"
+    owner: astroplant
+    mode: 0755
+    
 - name: Copy uwsgi configuration.
   template:
     src: uwsgi.ini.j2

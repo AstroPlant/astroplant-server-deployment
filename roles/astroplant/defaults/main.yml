@@ -9,3 +9,6 @@ astroplant_server_dir: /usr/bin/astroplant
 
 # AstroPlant server config:
 astroplant_server_listen_port: 8080
+
+# Application configuration
+astroplant_host: my.astroplant.io
