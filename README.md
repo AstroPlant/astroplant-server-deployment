@@ -24,6 +24,12 @@ Create/upgrade the database (make sure to backup the current database first):
 source /home/astroplant/astro_venv/bin/activate && python manage.py migrate
 ```
 
+If desired, you can import default AstroPlant data (such as measurement types, peripheral device definitions, etc.):
+
+```
+source /home/astroplant/astro_venv/bin/activate && python manage.py loaddata astroplant
+```
+
 Manually request letsencrypt certificate:
 ```
 $ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d astroplant.kepow.org -d astroplant.io
