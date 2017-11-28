@@ -35,6 +35,10 @@ http {
         # Nginx listen port
         listen 80;
         
+        if ($host !~* ^({{ astroplant_host }})$ ) {
+            return 444;
+        }
+        
         # By-pass the application servers for let's encrypt
         location /.well-known {
             alias /var/www/astroplant/.well-known;
@@ -52,7 +56,11 @@ http {
 
         ssl_certificate /etc/letsencrypt/live/astroplant.kepow.org/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/astroplant.kepow.org/privkey.pem;
-
+        
+        if ($host !~* ^({{ astroplant_host }})$ ) {
+            return 444;
+        }
+        
         # By-pass the application servers for static files
         location /static {
             alias /var/www/astroplant/static;
