@@ -54,8 +54,8 @@ http {
         # Running port
         listen 443 ssl;
 
-        ssl_certificate /etc/letsencrypt/live/astroplant.kepow.org/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/astroplant.kepow.org/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/{{ astroplant_host }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ astroplant_host }}/privkey.pem;
         
         if ($host !~* ^({{ astroplant_host }})$ ) {
             return 444;
