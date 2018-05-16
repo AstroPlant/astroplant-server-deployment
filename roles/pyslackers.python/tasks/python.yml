@@ -1,0 +1,36 @@
+---
+- name: "Install python {{ python_version }}"
+  no_log: True
+  command: "/usr/local/pythonz/bin/pythonz install {{ python_version }}"
+  args:
+    creates: "/usr/local/pythonz/pythons/CPython-{{ python_version }}/bin/python"
+
+- name: "Update pip & setuptools for python {{ python_version }}"
+  pip:
+    executable: "/usr/local/pythonz/pythons/CPython-{{ python_version }}/bin/pip3"
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    state: "{{ item.state }}"
+  with_items:
+    - {name: pip, state: "{{ 'present' if pip_version is defined else 'latest' }}", version: "{{ pip_version | default(omit) }}"}
+    - {name: setuptools, state: "{{ 'present' if setuptools_version is defined else 'latest' }}", version: "{{ setuptools_version | default(omit) }}"}
+  when: "python_version[0] == '3'"
+
+- name: "Install pip"
+  command: "/usr/local/pythonz/pythons/CPython-{{ python_version }}/bin/python -m ensurepip"
+  args:
+    creates: "/usr/local/pythonz/pythons/CPython-{{ python_version }}/bin/pip"
+  when: "python_version[0] == '2'"
+
+
+- name: "Update pip, setuptools & virtualenv for python {{ python_version }}"
+  pip:
+    executable: "/usr/local/pythonz/pythons/CPython-{{ python_version }}/bin/pip"
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    state: "{{ item.state }}"
+  with_items:
+    - {name: pip, state: "{{ 'present' if pip_version is defined else 'latest' }}", version: "{{ pip_version | default(omit) }}"}
+    - {name: setuptools, state: "{{ 'present' if setuptools_version is defined else 'latest' }}", version: "{{ setuptools_version | default(omit) }}"}
+    - {name: virtualenv, state: "{{ 'present' if virtualenv_version is defined else 'latest' }}", version: "{{ virtualenv_version | default(omit) }}"}
+  when: "python_version[0] == '2'"

@@ -1,0 +1,62 @@
+---
+- include_tasks: python.yml
+  with_items:
+    - "{{ virtualenv.value.version }}"
+  loop_control:
+    loop_var: python_version
+
+- name: Virtualenv exist
+  stat:
+    path: "{{ virtualenv.value.path }}/bin/python"
+  register: current_env
+
+- name: "Verify {{ virtualenv.key }} python version"
+  command: "{{ virtualenv.value.path }}/bin/python --version"
+  register: current_python_version
+  changed_when: False
+  when:
+    - current_env.stat.exists
+
+- name: "Wrong python version in {{ virtualenv.key }}"
+  file:
+    state: absent
+    path: "{{ virtualenv.value.path }}"
+    force: yes
+  when:
+    - not current_python_version is skipped
+    - virtualenv.value.version not in current_python_version.stdout and virtualenv.value.version not in current_python_version.stderr
+
+- name: "Create environment {{ virtualenv.key }}"
+  pip:
+    virtualenv: "{{ virtualenv.value.path }}"
+    virtualenv_command: "/usr/local/pythonz/pythons/CPython-{{ virtualenv.value.version }}/bin/python -m venv"
+    state: "{{ 'present' if virtualenv.value.pip_version is defined else 'latest' }}"
+    name: pip
+    version: "{{ virtualenv.value.pip_version | default(omit) }}"
+  when: "virtualenv.value.version[0] == '3'"
+
+- name: "Create environment {{ virtualenv.key }}"
+  pip:
+    virtualenv: "{{ virtualenv.value.path }}"
+    virtualenv_command: "/usr/local/pythonz/pythons/CPython-{{ virtualenv.value.version }}/bin/virtualenv"
+    virtualenv_python: "/usr/local/pythonz/pythons/CPython-{{ virtualenv.value.version }}/bin/python"
+    state: "{{ 'present' if virtualenv.value.pip_version is defined else 'latest' }}"
+    name: pip
+    version: "{{ virtualenv.value.pip_version | default(omit) }}"
+  when: "virtualenv.value.version[0] == '2'"
+
+- name: Update setuptools
+  pip:
+    virtualenv: "{{ virtualenv.value.path }}"
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    version: "{{ item.version }}"
+  with_items:
+    - {name: setuptools, state: "{{ 'present' if virtualenv.value.setuptools_version is defined else 'latest' }}", version: "{{ virtualenv.value.setuptools_version | default(omit) }}"}
+
+- name: Requirements
+  pip:
+    virtualenv: "{{ virtualenv.value.path }}"
+    requirements: "{{ virtualenv.value.requirements }}"
+  when:
+    - virtualenv.value.requirements is defined

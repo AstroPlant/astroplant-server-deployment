@@ -1,0 +1,14 @@
+---
+- import_tasks: pythonz.yml
+
+- include_tasks: python.yml
+  with_items: "{{ python_versions }}"
+  loop_control:
+    loop_var: python_version
+  when: python_versions is defined
+
+- include_tasks: virtualenv.yml
+  with_dict: "{{ virtualenvs }}"
+  loop_control:
+    loop_var: virtualenv
+  when: virtualenvs is defined

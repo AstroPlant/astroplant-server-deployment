@@ -1,0 +1,44 @@
+---
+- name: install python source dependencies
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    force: yes
+  with_items:
+    - git
+    - build-essential
+    - zlib1g-dev
+    - libbz2-dev
+    - libssl-dev
+    - libreadline-dev
+    - libncurses5-dev
+    - libsqlite3-dev
+    - libgdbm-dev
+    - libdb-dev
+    - libexpat-dev
+    - libpcap-dev
+    - liblzma-dev
+    - libpcre3-dev
+
+- name: Download Pythonz
+  git:
+    force: no
+    repo: "{{ pythonz_repo }}"
+    dest: /usr/src/pythonz
+    version: "{{ pythonz_version }}"
+  register: new_pythonz_release
+
+- name: Install pythonz
+  command: /usr/bin/python /usr/src/pythonz/pythonz_install.py --systemwide
+  args:
+    chdir: /usr/local
+    creates: /usr/local/pythonz
+  register: install_pythonz
+
+- name: Upgrade pythonz
+  command: /usr/bin/python /usr/src/pythonz/pythonz_install.py --upgrade --systemwide
+  args:
+    chdir: /usr/local
+  when:
+    - new_pythonz_release is changed
+    - install_pythonz is skipped

@@ -1,0 +1,37 @@
+---
+services: docker
+
+env:
+  - distro=debian8
+  - distro=debian9
+  - distro=ubuntu1604
+
+install:
+  - export container_id=$(date +%s)
+  - idempotence=$(mktemp)
+  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+
+  # Build and run docker container
+  - docker pull geerlingguy/docker-$distro-ansible:latest
+  - docker run --detach --volume="$(dirname "$TRAVIS_BUILD_DIR")":/etc/ansible/roles:rw --name $container_id --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro geerlingguy/docker-$distro-ansible:latest /lib/systemd/systemd
+  - docker exec --tty ${container_id} env TERM=xterm apt-get update -qq
+  - docker ps
+
+  # Install requirements
+  - docker exec --tty ${container_id} env TERM=xterm bash -c "printf 'requests==2.18.4' > /opt/requirements.txt"
+
+script:
+  # Run playbook.
+  - docker exec --tty $container_id env TERM=xterm ansible-playbook /etc/ansible/roles/ansible-role-python/tests/test.yml --syntax-check
+  - docker exec $container_id env TERM=xterm env ANSIBLE_FORCE_COLOR=1 ansible-playbook /etc/ansible/roles/ansible-role-python/tests/test.yml -vvv
+  - docker exec $container_id ansible-playbook /etc/ansible/roles/ansible-role-python/tests/test.yml | tee -a $idempotence
+  - tail $idempotence | grep -q 'changed=0.*failed=0' && (printf 'Idempotence test pass') || (printf 'Idempotence test fail' && exit 1)
+
+  # Tests
+  - docker exec --tty $container_id env TERM=xterm stat /usr/local/pythonz/pythons/CPython-3.6.2/bin/python
+  - docker exec --tty $container_id env TERM=xterm stat /usr/local/pythonz/pythons/CPython-3.6.3/bin/python
+  - docker exec --tty $container_id env TERM=xterm /opt/test_env/env_1/bin/python --version == 'Python 3.6.1'
+  - docker exec --tty $container_id env TERM=xterm /opt/test_env/env_1/bin/pip freeze | grep -q 'requests==2.18.4' && exit 0 || exit 1
+  - docker exec --tty $container_id env TERM=xterm /opt/test_env/env_2/bin/python --version == 'Python 3.6.2'
+  - docker exec --tty $container_id env TERM=xterm /opt/test_env/env_2/bin/pip --version == '8.0.0'
+  - docker exec --tty $container_id env TERM=xterm /opt/test_env/env_3/bin/python --version == '2.7.14'
