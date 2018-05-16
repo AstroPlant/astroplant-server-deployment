@@ -56,9 +56,8 @@ certbot_keep_updated: yes
 certbot_auto_renew_user: root
 
 # Python
-python_install_2: no
-python_install_virtualenv: yes
-python_update_pip: yes
+python_versions:
+- 3.5.1
 
 # AstroPlant
 astroplant_admins:
