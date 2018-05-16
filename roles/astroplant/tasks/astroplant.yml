@@ -24,7 +24,7 @@
     requirements: "{{ astroplant_server_requirements }}"
     state: forcereinstall
     virtualenv: /home/astroplant/astro_venv
-    virtualenv_python: python3.4
+    virtualenv_python: /usr/local/pythonz/pythons/CPython-3.5.1/bin/python
 
 - name: Install npm packages.
   npm:

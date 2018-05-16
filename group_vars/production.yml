@@ -57,7 +57,9 @@ certbot_auto_renew_user: root
 
 # Python
 python_versions:
-- 3.5.1
+  - "3.5.1"
+
+virtualenvs: []
 
 # AstroPlant
 astroplant_admins:
