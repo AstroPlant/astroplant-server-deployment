@@ -2,7 +2,7 @@
 AstroPlant server deployment using Ansible.
 
 # Requirements
-Ansible 2.3
+Ansible 2.5
 
 # Configuring
 You need to supply a secret key for the Django application and a password for the database user. Copy the files in `./conf` and remove the `.example` suffix, and edit the newly created files.
