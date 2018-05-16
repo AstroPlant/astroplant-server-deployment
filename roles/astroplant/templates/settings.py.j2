@@ -71,11 +71,7 @@ ROOT_URLCONF = 'server.urls'
 ASGI_APPLICATION = 'backend.routing.application'
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_ipc.IPCChannelLayer",
-        "CONFIG": {
-            "prefix": "astroplant",
-            "capacity": 500
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 
