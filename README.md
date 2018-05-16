@@ -35,12 +35,7 @@ Manually request a LetsEncrypt certificate for your domain:
 $ /opt/certbot/certbot-auto certonly --webroot -w /var/www/astroplant -d example.com
 ```
 
-Run a Daphne worker service
-```bash
-source /home/astroplant/astro_venv/bin/activate && python manage.py runworker
-```
-
 Start the Daphne server to serve request:
 ```bash
-source /home/astroplant/astro_venv/bin/activate && daphne --ws-protocol "graphql-ws" --proxy-headers server.asgi:channel_layer
+source /home/astroplant/astro_venv/bin/activate && daphne server.asgi:application
 ```
