@@ -1,3 +1,6 @@
+This was used for the [old AstroPlant server implementation](https://github.com/AstroPlant/astroplant-server) and is no longer used.
+You can find the new AstroPlant back-end at https://github.com/AstroPlant/astroplant-backend.
+
 # AstroPlant deployment
 AstroPlant server deployment using Ansible.
 
